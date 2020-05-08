@@ -19,5 +19,7 @@ typedef struct
 Array *map(Array *src, Mapper mapper);
 Array *filter(Array *src, Predicate predicate);
 int reduce(Array *src, int init, Reducer reducer);
-
+Array *create_array(unsigned length);
+void display_array(Array *list);
+void free_array(Array *list);
 #endif
