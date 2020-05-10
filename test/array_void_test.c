@@ -38,6 +38,18 @@ Bool is_void_even(Object object)
   return value % 2 == 0;
 }
 
+Object convert_to_lowercase(Object object)
+{
+  char ch = *((char *)object);
+  return create_char_object(ch + 32);
+}
+
+Object increment_by_1(Object object)
+{
+  int number = *((int *)object);
+  return create_int_object(number + 1);
+}
+
 test_status assert_filter_void_vowels()
 {
   ArrayVoid_ptr src = create_array_void(6);
@@ -69,6 +81,42 @@ test_status assert_filter_void_evens()
   if (evens->length == 2 &&
       cast_to_int(evens->array[0]) == 2 &&
       cast_to_int(evens->array[1]) == 4)
+  {
+    return Pass;
+  }
+  return Fail;
+}
+
+test_status assert_map_void_lowercase()
+{
+  ArrayVoid_ptr src = create_array_void(4);
+  src->array[0] = create_char_object('A');
+  src->array[1] = create_char_object('B');
+  src->array[2] = create_char_object('C');
+  src->array[3] = create_char_object('D');
+  ArrayVoid_ptr lower_case_chars = map_void(src, &convert_to_lowercase);
+  if (lower_case_chars->length == 4 &&
+      cast_to_char(lower_case_chars->array[0]) == 'a' &&
+      cast_to_char(lower_case_chars->array[1]) == 'b' &&
+      cast_to_char(lower_case_chars->array[2]) == 'c' &&
+      cast_to_char(lower_case_chars->array[3]) == 'd')
+  {
+    return Pass;
+  }
+  return Fail;
+}
+
+test_status assert_map_void_increment_by_1()
+{
+  ArrayVoid_ptr src = create_array_void(3);
+  src->array[0] = create_int_object(1);
+  src->array[1] = create_int_object(2);
+  src->array[2] = create_int_object(3);
+  ArrayVoid_ptr incremented_by_one = map_void(src, &increment_by_1);
+  if (incremented_by_one->length == 3 &&
+      cast_to_int(incremented_by_one->array[0]) == 2 &&
+      cast_to_int(incremented_by_one->array[1]) == 3 &&
+      cast_to_int(incremented_by_one->array[2]) == 4)
   {
     return Pass;
   }

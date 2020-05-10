@@ -30,6 +30,16 @@ ArrayVoid_ptr filter_void(ArrayVoid_ptr src, PredicateVoid predicate)
   return list;
 }
 
+ArrayVoid_ptr map_void(ArrayVoid_ptr src, MapperVoid mapper)
+{
+  ArrayVoid_ptr array = create_array_void(src->length);
+  for (int index = 0; index < src->length; index++)
+  {
+    array->array[index] = mapper(src->array[index]);
+  }
+  return array;
+}
+
 void display_void_array(ArrayVoid_ptr src, DisplayData printer)
 {
   printf("[ ");

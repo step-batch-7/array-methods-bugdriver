@@ -128,6 +128,10 @@ int main(void)
   describe("filter_void()");
   it("should filter vowels from list of characters", assert_filter_void_vowels());
   it("should filter even numbers in list", assert_filter_void_evens());
+
+  describe("map_void()");
+  it("should map characters to lowercase", assert_map_void_lowercase());
+  it("should map numbers to increment by 1", assert_map_void_increment_by_1());
   printf("\nTEST END..............");
   return 0;
 }
