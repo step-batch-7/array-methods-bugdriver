@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include "array.h"
 
-Array *create_array(unsigned length)
+Array_ptr create_array(unsigned length)
 {
-  Array *list = malloc(sizeof(Array));
+  Array_ptr list = malloc(sizeof(Array));
   if (list != NULL)
   {
     list->array = malloc(sizeof(int) * length);
@@ -13,26 +13,26 @@ Array *create_array(unsigned length)
   return list;
 }
 
-Array *filter(Array *src, Predicate predicate)
+Array_ptr filter(Array_ptr src, Predicate predicate)
 {
-  Array *list = create_array(src->length);
-  unsigned even_count = 0;
+  Array_ptr list = create_array(src->length);
+  unsigned filter_element_count = 0;
   for (int index = 0; index < src->length; index++)
   {
     if ((*predicate)(src->array[index]))
     {
-      list->array[even_count] = src->array[index];
-      even_count += 1;
+      list->array[filter_element_count] = src->array[index];
+      filter_element_count += 1;
     }
   }
-  list->array = realloc(list->array, even_count);
-  list->length = even_count;
+  list->array = realloc(list->array, sizeof(int) * filter_element_count);
+  list->length = filter_element_count;
   return list;
 }
 
-Array *map(Array *src, Mapper mapper)
+Array_ptr map(Array_ptr src, Mapper mapper)
 {
-  Array *list = create_array(src->length);
+  Array_ptr list = create_array(src->length);
   for (int index = 0; index < src->length; index++)
   {
     list->array[index] = (*mapper)(src->array[index]);
@@ -40,7 +40,7 @@ Array *map(Array *src, Mapper mapper)
   return list;
 }
 
-int reduce(Array *src, int init, Reducer reducer)
+int reduce(Array_ptr src, int init, Reducer reducer)
 {
   int reduced_value = init;
   for (int index = 0; index < src->length; index++)
@@ -50,7 +50,7 @@ int reduce(Array *src, int init, Reducer reducer)
   return reduced_value;
 }
 
-void display_array(Array *list)
+void display_array(Array_ptr list)
 {
   printf("[ ");
   for (int index = 0; index < list->length; index++)
@@ -61,7 +61,7 @@ void display_array(Array *list)
   printf(" ]");
 }
 
-void free_array(Array *list)
+void free_array(Array_ptr list)
 {
   free(list->array);
   free(list);

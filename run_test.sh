@@ -1,5 +1,5 @@
 echo "Compiling..."
-gcc -o bin/test ./test/*.c
+gcc -o bin/test ./test/test.c
 if [ $? == 0 ]
 then
   ./bin/test

@@ -1,45 +1,35 @@
 #include <stdio.h>
-#include "array.h"
+#include <stdlib.h>
+#include "array_void.h"
 
-Bool is_even(int number)
+Object create_int_object(int value)
 {
-  return number % 2 == 0;
+  int *number = malloc(sizeof(int));
+  *number = value;
+  return number;
 }
 
-int square(int number)
+Bool is_even(Object number)
 {
-  return number * number;
+  int *value = (int *)number;
+  return *value % 2 == 0;
 }
 
-int add(int first_number, int second_number)
+void print_int(Object object)
 {
-  return first_number + second_number;
+  int *value = (int *)object;
+  printf("%d", *value);
 }
 
 int main(void)
 {
-  Array *list = create_array(7);
-  list->array[0] = 1;
-  list->array[1] = 2;
-  list->array[2] = 3;
-  list->array[3] = 4;
-  list->array[4] = 8;
-  list->array[5] = 6;
-  list->array[6] = 7;
+  ArrayVoid_ptr src = create_array_void(4);
+  src->array[0] = create_int_object(1);
+  src->array[1] = create_int_object(2);
+  src->array[2] = create_int_object(6);
+  src->array[3] = create_int_object(4);
 
-  Array *even_list = filter(list, &is_even);
-
-  Array *square_list = map(list, &square);
-
-  int addition = reduce(list, 0, &add);
-
-  display_array(even_list);
-  printf("\n");
-  display_array(square_list);
-  printf("\n");
-  printf("reduced value is : %d", addition);
-  free_array(even_list);
-  free_array(square_list);
-  free_array(list);
+  ArrayVoid_ptr even_list = filter_void(src, &is_even);
+  display_void_array(even_list, &print_int);
   return 0;
 }

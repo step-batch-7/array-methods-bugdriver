@@ -1,6 +1,8 @@
 #include "../array.h"
-#include "../array.c"
 #include "test.h"
+#include "../array.c"
+#include "tester.c"
+#include "array_void_test.c"
 
 Bool is_even(int number)
 {
@@ -19,8 +21,8 @@ int add(int first_number, int second_number)
 
 test_status assert_filter_empty_list()
 {
-  Array *list = create_array(0);
-  Array *evens = filter(list, &is_even);
+  Array_ptr list = create_array(0);
+  Array_ptr evens = filter(list, &is_even);
   if (evens->length == 0)
   {
     return Pass;
@@ -30,12 +32,12 @@ test_status assert_filter_empty_list()
 
 test_status assert_filter_even_numbers()
 {
-  Array *list = create_array(4);
+  Array_ptr list = create_array(4);
   list->array[0] = 1;
   list->array[1] = 2;
   list->array[2] = 3;
   list->array[3] = 4;
-  Array *evens = filter(list, &is_even);
+  Array_ptr evens = filter(list, &is_even);
   if (evens->array[0] == 2 && evens->array[0] == 2 && evens->length == 2)
   {
     return Pass;
@@ -45,8 +47,8 @@ test_status assert_filter_even_numbers()
 
 test_status assert_map_empty_list()
 {
-  Array *list = create_array(0);
-  Array *squares = map(list, &square);
+  Array_ptr list = create_array(0);
+  Array_ptr squares = map(list, &square);
   if (squares->length == 0)
   {
     return Pass;
@@ -56,10 +58,10 @@ test_status assert_map_empty_list()
 
 test_status assert_map_numbers_with_square()
 {
-  Array *list = create_array(2);
+  Array_ptr list = create_array(2);
   list->array[0] = 2;
   list->array[1] = 3;
-  Array *squares = map(list, &square);
+  Array_ptr squares = map(list, &square);
   if (squares->array[0] == 4 && squares->array[1] == 9 && squares->length == 2)
   {
     return Pass;
@@ -69,7 +71,7 @@ test_status assert_map_numbers_with_square()
 
 test_status assert_reduce_add_numbers_with_initial()
 {
-  Array *list = create_array(3);
+  Array_ptr list = create_array(3);
   list->array[0] = 10;
   list->array[1] = 20;
   list->array[2] = 30;
@@ -83,7 +85,7 @@ test_status assert_reduce_add_numbers_with_initial()
 
 test_status assert_reduce_add_numbers()
 {
-  Array *list = create_array(3);
+  Array_ptr list = create_array(3);
   list->array[0] = 10;
   list->array[1] = 20;
   list->array[2] = 30;
@@ -97,7 +99,7 @@ test_status assert_reduce_add_numbers()
 
 test_status assert_reduce_empty_list_initial()
 {
-  Array *list = create_array(0);
+  Array_ptr list = create_array(0);
   int sum = reduce(list, 10, &add);
   if (sum == 10)
   {
@@ -122,6 +124,10 @@ int main(void)
   it("should return initial value when src list is empty", assert_reduce_empty_list_initial());
   it("should add numbers with initial value", assert_reduce_add_numbers_with_initial());
   it("should add numbers", assert_reduce_add_numbers());
+
+  describe("filter_void()");
+  it("should filter vowels from list of characters", assert_filter_void_vowels());
+  it("should filter even numbers in list", assert_filter_void_evens());
   printf("\nTEST END..............");
   return 0;
 }
