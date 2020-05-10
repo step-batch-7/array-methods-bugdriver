@@ -40,6 +40,16 @@ ArrayVoid_ptr map_void(ArrayVoid_ptr src, MapperVoid mapper)
   return array;
 }
 
+Object reduce_void(ArrayVoid_ptr src, Object init, ReducerVoid reducer)
+{
+  Object reduced_value = init;
+  for (int index = 0; index < src->length; index++)
+  {
+    reduced_value = (*reducer)(reduced_value, src->array[index]);
+  }
+  return reduced_value;
+}
+
 void display_void_array(ArrayVoid_ptr src, DisplayData printer)
 {
   printf("[ ");

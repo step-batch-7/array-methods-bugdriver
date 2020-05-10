@@ -50,6 +50,13 @@ Object increment_by_1(Object object)
   return create_int_object(number + 1);
 }
 
+Object add_void(Object first_number, Object second_number)
+{
+  int *fn = (int *)first_number;
+  int *sn = (int *)second_number;
+  return create_int_object((*fn) + (*sn));
+}
+
 test_status assert_filter_void_vowels()
 {
   ArrayVoid_ptr src = create_array_void(6);
@@ -117,6 +124,36 @@ test_status assert_map_void_increment_by_1()
       cast_to_int(incremented_by_one->array[0]) == 2 &&
       cast_to_int(incremented_by_one->array[1]) == 3 &&
       cast_to_int(incremented_by_one->array[2]) == 4)
+  {
+    return Pass;
+  }
+  return Fail;
+}
+
+test_status assert_reduce_void_sum_with_initial()
+{
+  ArrayVoid_ptr src = create_array_void(0);
+
+  Object sum = reduce_void(src, create_int_object(3), &add_void);
+
+  if (cast_to_int(sum) == 3)
+  {
+    return Pass;
+  }
+  return Fail;
+}
+
+test_status assert_reduce_void_sum()
+{
+  ArrayVoid_ptr src = create_array_void(4);
+  src->array[0] = create_int_object(1);
+  src->array[1] = create_int_object(2);
+  src->array[2] = create_int_object(6);
+  src->array[3] = create_int_object(4);
+
+  Object sum = reduce_void(src, create_int_object(0), &add_void);
+
+  if (cast_to_int(sum) == 13)
   {
     return Pass;
   }
